@@ -19,10 +19,13 @@ jobs:
     displayName: 'dotnet build'
   - script: ./run-tests.sh
     displayName: 'run tests'
-  - task: PublishBuildArtifacts@1
+  - task: ArchiveFiles@2
     inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-      artifactName: 'myWebsiteName' 
+      rootFolderOrFile: '$(Build.BinariesDirectory)'
+      includeRootFolder: true
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
   - task: PublishTestResults@2
     displayName: 'Publish Test Results **/*.trx'
     condition: succeededOrFailed()
